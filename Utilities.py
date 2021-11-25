@@ -1,8 +1,13 @@
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 import mysql.connector
 from datetime import datetime
 
+app1 = Flask(__name__)
+app1.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:Anmol@1997@localhost/magic'
+db = SQLAlchemy(app1)
 class DB_CONNECTION:
-    DB = mysql.connector.connect(host ="localhost", user ="root", passwd ="", database ="socialweb", autocommit=True)
+    DB = mysql.connector.connect(host ="localhost", user ="root", passwd = "Anmol@1997", database = "magic")
     db_cursor = DB.cursor()
 
     def executeAndRetrieveCommand(self, command):
@@ -23,6 +28,14 @@ def createUser(name, username, password):
         return True
     else:
         return False
+
+def createpost(posts):
+        print('post func')
+        command = "INSERT INTO post (posts) VALUES " \
+                  "('{fposts}')".format(fposts = posts)
+        db_con.executeCommandOnly(command)
+        return True
+
 
 def checkUser(username):
     command = "SELECT * FROM user WHERE email='" + username +"'"

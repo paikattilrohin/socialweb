@@ -88,6 +88,16 @@ def signup():
         else:
             return redirect(url_for('signup'))
 
+@app.route('/content', methods=['GET', 'POST'])
+def posting():
+    posts = request.form['content']
+    success = Utilities.createpost(posts)
+    print('step2')
+    if success:
+        return 'post created'
+    else:
+        return 'post not created'
+
 
 @login_manager.unauthorized_handler
 def unauthorized_handler():
