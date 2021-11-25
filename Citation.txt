@@ -1,0 +1,3 @@
+https://realpython.com/primer-on-jinja-templating/
+
+https://stackoverflow.com/questions/30011170/flask-application-how-to-link-a-javascript-file-to-website

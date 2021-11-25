@@ -1,0 +1,2 @@
+-> Fix post submit button
+-> Change to flask way of db connection
