@@ -1,7 +1,11 @@
+import flask
 from flask import Flask, render_template, url_for, request, redirect
 import flask_login
 
-app = Flask(__name__)
+import Utilities
+
+app = Flask(__name__, static_url_path='/static')
+app.secret_key = 'Enterprise Web Dev'
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
 
@@ -9,65 +13,98 @@ login_manager.init_app(app)
 class User(flask_login.UserMixin):
     pass
 
+
 @login_manager.user_loader
 def user_loader(username):
-    users = []
-    ## todo get db connection for user
-    ## users = getUser()
-    if username not in users:
-        return
-    user = User()
-    user.id = username
-    return user
-
+    userexists = Utilities.checkUser(username)
+    if userexists:
+        user = User()
+        user.id = username
+        return user
 
 
 @login_manager.request_loader
 def request_loader(request):
-    # username = request.form.get('username')
-    # if username not in users:
-    #     return
-    # user = User()
-    # user.id = username
-    # user.is_authenticated = request.form['password'] == users[username]['password']
-    # ## can be improved
-    # return user
-    pass
+    username = request.form.get('username')
+    password = request.form.get('password')
+    if username and password:
+        login_status = Utilities.check_username_pass(username, password)
+        if login_status:
+            user = User()
+            # user.id = username
+            # user.is_authenticated = login_status
+            return user
+
 
 @login_manager.unauthorized_handler
 def unauthorized_handler():
     return 'Unauthorized'
 
-
-@app.route("/")
-def template_test():
+@app.route('/view', methods=['GET'])
+def view_post():
     return render_template('index.html')
     # if request.method == 'GET':
     #     return redirect(url_for('login'))
 
+
+
+@app.route('/', methods=['GET'])
+def index():
+    return render_template('index.html')
+    # if request.method == 'GET':
+    #     return redirect(url_for('login'))
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    pass
-    # if request.method == 'GET':
-    #     return render_template('index.html')
-    #     username = request.form['username']
-    # else:
-    #     if request.form['username'] in users.keys():
-    #         username = request.form['username']
-    #         if request.form['password'] == users[username]['password']:
-    #             user = User()
-    #             user.id = username
-    #             flask_login.login_user(user)
-    #             return redirect(url_for('protected'))
-    #     else:
-    #         return 'Username invalid '
-    #     return 'Bad login'
+    if flask.request.method == 'GET':
+        return render_template('login.html')
+    else:
+        username = request.form['username']
+        password = request.form['password']
+        login_status = Utilities.check_username_pass(username, password)
+        if login_status:
+            user = User()
+            user.id = username
+            flask_login.login_user(user)
+            return redirect('home')
+        else:
+            return 'wrong'
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if flask.request.method == 'GET':
+        return render_template('signup.html')
+    else:
+        name = request.form['name']
+        email = request.form['emailID']
+        password = request.form['password']
+        success = Utilities.createUser(name, email, password)
+        if success:
+            user = User()
+            user.id = email
+            flask_login.login_user(user)
+            return redirect(url_for('home'))
+        else:
+            return redirect(url_for('signup'))
 
 
-@app.route('/protected')
+@login_manager.unauthorized_handler
+def unauthorized_handler():
+    return redirect(url_for('login'))
+
+
+@app.route('/logout', methods=['GET'])
 @flask_login.login_required
-def protected():
-    return 'Hi You are special ,Logged in as: ' + flask_login.current_user.id
+def logout():
+    flask_login.logout_user()
+    return  redirect(url_for('home'))
+
+
+@app.route('/home', methods=['GET'])
+@flask_login.login_required
+def home():
+    return render_template('loggedin.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, threaded=True)
