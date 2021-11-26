@@ -34,7 +34,6 @@ def get_user_id(username):
     existing_user = db_con.executeAndRetrieveCommand("SELECT userid FROM user WHERE email ='" + username + "'")
     if len(existing_user) == 1:
         user_id = existing_user[0][0]
-    print(user_id)
     return user_id
 
 

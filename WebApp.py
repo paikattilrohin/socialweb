@@ -93,7 +93,6 @@ def signup():
 @app.route('/createpost', methods=['POST'])
 @flask_login.login_required
 def posting():
-    print("Received post")
     content = request.form['postcontent']
     user_id = Utilities.get_user_id(current_user.id)
     success = Utilities.create_post(content, user_id)
@@ -131,18 +130,19 @@ def profile():
 @app.route('/like', methods=['POST'])
 @flask_login.login_required
 def like():
-    user_id = Utilities.get_user_id(current_user.id)
-    name = Utilities.get_name_for_user(user_id)
-    posts = Utilities.get_posts_by_user(user_id)
-    return render_template('loggedin.html', all_posts = posts, name = name )
+    print(request.values)
+    return "1"
 
 @app.route('/favorite', methods=['POST'])
 @flask_login.login_required
 def favorite():
-    user_id = Utilities.get_user_id(current_user.id)
-    name = Utilities.get_name_for_user(user_id)
-    posts = Utilities.get_posts_by_user(user_id)
-    return render_template('loggedin.html', all_posts = posts, name = name )
+    print(request.values)
+    return "1"
+    # user_id = Utilities.get_user_id(current_user.id)
+    # name = Utilities.get_name_for_user(user_id)
+    # posts = Utilities.get_posts_by_user(user_id)
+    # return render_template('loggedin.html', all_posts = posts, name = name )
+
 
 if __name__ == '__main__':
     app.run(debug=True, threaded=True)
