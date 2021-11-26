@@ -11,7 +11,16 @@
       color: #000000;
       text-align: left;
   }
-  
+
+
+.liked{
+    color: red;
+}
+
+.hide{
+    display: none;
+}
+
 .banner{
     background-image: url(img/banner.jpg);
     background-repeat: no-repeat;

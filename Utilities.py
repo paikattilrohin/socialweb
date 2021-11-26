@@ -1,13 +1,10 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 import mysql.connector
 from datetime import datetime
 
-app1 = Flask(__name__)
-app1.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:Anmol@1997@localhost/magic'
-db = SQLAlchemy(app1)
+
 class DB_CONNECTION:
-    DB = mysql.connector.connect(host ="localhost", user ="root", passwd = "Anmol@1997", database = "magic")
+
+    DB = mysql.connector.connect(host ="localhost", user ="root", passwd = "", database = "socialweb")
     db_cursor = DB.cursor()
 
     def executeAndRetrieveCommand(self, command):

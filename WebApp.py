@@ -1,6 +1,7 @@
 import flask
 from flask import Flask, render_template, url_for, request, redirect
 import flask_login
+from flask_login import current_user
 
 import Utilities
 
@@ -24,9 +25,9 @@ def user_loader(username):
 
 
 @login_manager.request_loader
-def request_loader(request):
-    username = request.form.get('username')
-    password = request.form.get('password')
+def request_loader(req):
+    username = req.form.get('username')
+    password = req.form.get('password')
     if username and password:
         login_status = Utilities.check_username_pass(username, password)
         if login_status:
@@ -40,19 +41,20 @@ def request_loader(request):
 def unauthorized_handler():
     return 'Unauthorized'
 
+
 @app.route('/view', methods=['GET'])
 def view_post():
     return render_template('index.html')
-    # if request.method == 'GET':
-    #     return redirect(url_for('login'))
-
 
 
 @app.route('/', methods=['GET'])
 def index():
-    return render_template('index.html')
-    # if request.method == 'GET':
-    #     return redirect(url_for('login'))
+
+    posts = [{'postid': 1000, 'content': 'Hello', 'name': 'Rohin '},
+             {'postid': 1001, 'content': 'Goodbye', 'name': 'DUMBASS'}]
+
+
+    return render_template('index.html', all_posts=posts)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -71,6 +73,7 @@ def login():
         else:
             return 'wrong'
 
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if flask.request.method == 'GET':
@@ -87,6 +90,7 @@ def signup():
             return redirect(url_for('home'))
         else:
             return redirect(url_for('signup'))
+
 
 @app.route('/content', methods=['GET', 'POST'])
 def posting():
@@ -108,13 +112,26 @@ def unauthorized_handler():
 @flask_login.login_required
 def logout():
     flask_login.logout_user()
-    return  redirect(url_for('home'))
+    return redirect(url_for('login'))
 
 
 @app.route('/home', methods=['GET'])
 @flask_login.login_required
 def home():
     return render_template('loggedin.html')
+
+
+@app.route('/post', methods=['POST'])
+@flask_login.login_required
+def post():
+    return render_template('loggedin.html')
+
+
+@app.route('/profile', methods=['GET'])
+@flask_login.login_required
+def profile():
+    return render_template('loggedin.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True, threaded=True)
