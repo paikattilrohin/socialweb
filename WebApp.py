@@ -17,7 +17,7 @@ class User(flask_login.UserMixin):
 
 @login_manager.user_loader
 def user_loader(username):
-    userexists = Utilities.checkUser(username)
+    userexists = Utilities.check_user(username)
     if userexists:
         user = User()
         user.id = username
@@ -42,20 +42,12 @@ def unauthorized_handler():
     return redirect(url_for('login'))
 
 
-@app.route('/view', methods=['GET'])
-def view_post():
-    return render_template('index.html')
-
-
 @app.route('/', methods=['GET'])
 def index():
     if current_user.is_authenticated:
-        posts = Utilities.get_posts_for_user(current_user.id)
-        return render_template('index.html', all_posts=posts)
+        return redirect(url_for('home'))
     else:
-        posts = [{'postid': 1000, 'content': 'Hello', 'name': ' '},
-                 {'postid': 1001, 'content': 'Goodbye', 'name': 'DUMBASS'}]
-        # posts = Utilities.get_unlogged_user_posts()
+        posts = Utilities.get_unlogged_user_posts()
         return render_template('index.html', all_posts=posts)
 
 
@@ -71,9 +63,13 @@ def login():
             user = User()
             user.id = username
             flask_login.login_user(user)
-            return redirect('home')
+            return redirect(url_for('home'))
         else:
             return 'wrong'
+
+@app.route('/redirect', methods=['POST'])
+def redir():
+    return redirect(url_for('signup'))
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -84,7 +80,6 @@ def signup():
         name = request.form['name']
         email = request.form['emailID']
         password = request.form['password']
-        print(name, email, password)
         success = Utilities.create_user(name, email, password)
         if success:
             user = User()
@@ -101,7 +96,7 @@ def posting():
     print("Received post")
     content = request.form['postcontent']
     user_id = Utilities.get_user_id(current_user.id)
-    success = Utilities.createpost(content, user_id)
+    success = Utilities.create_post(content, user_id)
     if success:
         return redirect('profile')
     else:
@@ -118,21 +113,36 @@ def logout():
 @app.route('/home', methods=['GET'])
 @flask_login.login_required
 def home():
-    return render_template('loggedin.html')
-
-
-@app.route('/post', methods=['POST'])
-@flask_login.login_required
-def post():
-    return render_template('loggedin.html')
+    user_id = Utilities.get_user_id(current_user.id)
+    name = Utilities.get_name_for_user(user_id)
+    posts = Utilities.get_posts_for_user(user_id)
+    return render_template('loggedin.html', all_posts = posts )
 
 
 @app.route('/profile', methods=['GET'])
 @flask_login.login_required
 def profile():
-    posts = Utilities.get_posts_by_user(current_user.id)
-    return render_template('loggedin.html', all_posts = posts)
+    user_id = Utilities.get_user_id(current_user.id)
+    name = Utilities.get_name_for_user(user_id)
+    posts = Utilities.get_posts_by_user(user_id)
+    return render_template('loggedin.html', all_posts = posts, name = name )
 
+
+@app.route('/like', methods=['POST'])
+@flask_login.login_required
+def like():
+    user_id = Utilities.get_user_id(current_user.id)
+    name = Utilities.get_name_for_user(user_id)
+    posts = Utilities.get_posts_by_user(user_id)
+    return render_template('loggedin.html', all_posts = posts, name = name )
+
+@app.route('/favorite', methods=['POST'])
+@flask_login.login_required
+def favorite():
+    user_id = Utilities.get_user_id(current_user.id)
+    name = Utilities.get_name_for_user(user_id)
+    posts = Utilities.get_posts_by_user(user_id)
+    return render_template('loggedin.html', all_posts = posts, name = name )
 
 if __name__ == '__main__':
     app.run(debug=True, threaded=True)

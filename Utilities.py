@@ -1,9 +1,10 @@
 import mysql.connector
 from datetime import datetime
+import constants
 
 
 class DB_CONNECTION:
-    DB = mysql.connector.connect(host="localhost", user="root", passwd="", database="socialweb", autocommit=True)
+    DB = mysql.connector.connect(host="localhost", user="root", passwd=constants.password, database=constants.database, autocommit=True)
     db_cursor = DB.cursor()
 
     def executeAndRetrieveCommand(self, command):
@@ -32,17 +33,20 @@ def get_user_id(username):
     user_id = -1
     existing_user = db_con.executeAndRetrieveCommand("SELECT userid FROM user WHERE email ='" + username + "'")
     if len(existing_user) == 1:
-        user_id = existing_user[0]
+        user_id = existing_user[0][0]
+    print(user_id)
     return user_id
 
-def createpost(content, userid):
-    command = "INSERT INTO post (content, userid ) VALUES " \
-              "('{fcontent}', '{fuserid}')".format(fcontent=content, fuserid=userid)
+
+def create_post(content, userid):
+    name = get_name_for_user(userid)
+    command = "INSERT INTO post (content, userid, name ) VALUES " \
+              "('{fcontent}', '{fuserid}', '{fname}')".format(fcontent=content, fuserid=userid, fname=name)
     db_con.executeCommandOnly(command)
     return True
 
 
-def checkUser(username):
+def check_user(username):
     command = "SELECT * FROM user WHERE email='" + username + "'"
     user = db_con.executeAndRetrieveCommand(command)
     if len(user) == 1:
@@ -58,34 +62,55 @@ def check_username_pass(username, password):
     return False
 
 
-def get_posts_for_user(username):
-    ### improve
-    command = "SELECT * FROM user WHERE email != '" + username + " '"
-    posts = db_con.executeAndRetrieveCommand(command)
+def get_posts_for_user(user_id):
+    name = get_name_for_user(user_id)
     all_posts = []
-    return all_posts
-
-
-def get_posts_by_user(username):
-    ### improve
-    command = "SELECT name, userid FROM user WHERE email = '" + username + " ' "
-    result = db_con.executeAndRetrieveCommand(command)
-    all_posts = []
-    if len(result) > 0:
-        userid = result[1]
-        name = result[0]
-        command = "SELECT CONTENT FROM post WHERE userid = '" + userid + "' ORDER BY date DESC"
+    if name is not None:
+        userid = user_id
+        command = "SELECT content, postid, name FROM post WHERE userid != '" + str(userid) + "' ORDER BY date DESC"
         db_result_posts = db_con.executeAndRetrieveCommand(command)
         for post in db_result_posts:
             all_posts.append({
-                'name': name,
-                'content': post[0]
+                'name': post[2],
+                'content': post[0],
+                'postid': post[1]
             })
     return all_posts
 
 
-def get_unlogged_user_posts(username):
-    ### improve
-    command = "SELECT * FROM user WHERE email = '" + username + " ' "
-    posts = db_con.executeAndRetrieveCommand(command)
+def get_name_for_user(user_id):
+    command = "SELECT name FROM user WHERE userid = '" + str(user_id) + " ' "
+    result = db_con.executeAndRetrieveCommand(command)
+    if len(result) == 1:
+        return result[0][0]
     return None
+
+
+def get_posts_by_user(user_id):
+    name = get_name_for_user(user_id)
+    all_posts = []
+    if name is not None:
+        userid = user_id
+        command = "SELECT content, postid FROM post WHERE userid = '" + str(userid) + "' ORDER BY date DESC"
+        db_result_posts = db_con.executeAndRetrieveCommand(command)
+        for post in db_result_posts:
+            all_posts.append({
+                'name': name,
+                'content': post[0],
+                'postid': post[1]
+            })
+    return all_posts
+
+
+def get_unlogged_user_posts():
+    all_posts = []
+
+    command = "SELECT content, postid, name FROM post ORDER BY date DESC"
+    db_result_posts = db_con.executeAndRetrieveCommand(command)
+    for post in db_result_posts:
+        all_posts.append({
+            'name': post[2],
+            'content': post[0],
+            'postid': post[1]
+        })
+    return all_posts

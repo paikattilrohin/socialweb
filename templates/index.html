@@ -94,12 +94,13 @@
 
 
             <div class="card-header bg-transparent">
-                <form class="form-inline">
+                <form action="redirect" method="post" class="form-inline">
 
 
                     <div class="input-group w-100">
-                        <input type="text" name="message" id="message" placeholder="Message"
+                        <input type="text" name="Post" id="Post" placeholder="Post"
                                class="form-control form-control-md">
+                        <input type="submit" value="submit" placeholder="Submit">
                     </div>
 
 
@@ -129,7 +130,7 @@
                                 <button class="favorite-button" id="{{n['postid']}}"> ✭</button>
                                 <button class="submit hide" id="{{n['postid']}}submit"> ✭</button>
                             </div>
-                            <small>14 min</small>
+                            <small></small>
 
                         </div>
                     </div>

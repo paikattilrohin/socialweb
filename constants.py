@@ -1,0 +1,2 @@
+password = ""
+database = "socialweb"

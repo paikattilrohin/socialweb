@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/static/style.css">
 
     <!------------------LIght BOx for Gallery-------------->
     <link rel="stylesheet" href="lightbox.min.css">
@@ -122,42 +122,63 @@
 
 
                                 </div>
-
-
-
-
                             </div>
                             <small></small>
-
-
                         </div>
-
-
                     </div>
 
+<!--Before-->
+<!--                    <hr>-->
+<!--                    {% for i in all_posts %}-->
+<!--                    <div class="card-body">-->
 
+<!--                        <div class="media">-->
+
+<!--                            <div class="media-body">-->
+<!--                                <h5>{{name}}</h5>-->
+<!--                                <p class="text-justify">{{i['content']}}</p>-->
+
+
+<!--                            </div>-->
+
+<!--                            <small></small>-->
+
+<!--                        </div>-->
+
+
+<!--                    </div>-->
+<!--                    <hr>-->
+<!--                    {% endfor %}-->
+<!--Before-->
+    {% for n in all_posts %}
+            <div class="col-12 col-lg-14">
+                <div class="card shadow-sm">
                     <hr>
-                    {% for i in all_posts %}
+
                     <div class="card-body">
 
                         <div class="media">
+                            <img src="/static/Images/unknown_user_avatar.jpg" alt="img" width="55px" height="55px"
+                                 class="rounded-circle mr-3">
 
                             <div class="media-body">
-                                <h5>{{name}}</h5>
-                                <p class="text-justify">{{i['content']}}</p>
-
-
+                                <h5>{{ n["name"]}}</h5>
+                                <p class="text-justify">{{n['content']}}</p>
+                                <hr>
+                                <button class="like-button" id="{{n['postid']}}"> ♥</button>
+                                <input class="hide" type="text" id="{{n['postid']}}tag" placeholder="tags"/>
+                                <button class="favorite-button" id="{{n['postid']}}"> ✭</button>
+                                <button class="submit hide" id="{{n['postid']}}submit"> ✭</button>
                             </div>
-
-                            <small></small>
+                            <small>14 min</small>
 
                         </div>
-
-
                     </div>
-                    <hr>
-                    {% endfor %}
+                </div>
 
+            </div>
+            <hr>
+{% endfor %}
 
                 </div>
 
@@ -222,6 +243,33 @@
         lightbox.option({
           
         })
+
+</script>
+
+<script>
+
+    let likebuttons = document.querySelectorAll('.like-button');
+    likebuttons.forEach(el => el.addEventListener('click' , (e)=>{
+        e.currentTarget.classList.toggle('liked');
+        console.log(e.target.id);
+    }));
+
+    let favoritebuttons = document.querySelectorAll('.favorite-button');
+    favoritebuttons.forEach(el => el.addEventListener('click' , (e)=>{
+        var taggingbox = document.getElementById(e.target.id + "tag");
+        taggingbox.classList.toggle('hide');
+        var submitbutton = document.getElementById(e.target.id + "submit");
+        submitbutton.classList.toggle('hide');
+        e.target.classList.toggle('hide');
+    }));
+
+    let submitbuttons = document.querySelectorAll('.submit');
+    submitbuttons.forEach(el => el.addEventListener('click' , (e)=>{
+        console.log("hi");
+        e.currentTarget.classList.toggle('liked');
+    }));
+
+
 
 </script>
 
