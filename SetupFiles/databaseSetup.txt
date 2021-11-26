@@ -1,5 +1,7 @@
 DROP TABLE post;
 DROP TABLE user;
+DROP TABLE heart;
+DROP TABLE favorite;
 
 CREATE TABLE user(userid INT NOT NULL AUTO_INCREMENT,
                   name VARCHAR(50) NOT NULL,
@@ -15,26 +17,26 @@ CREATE TABLE post(postid INT NOT NULL AUTO_INCREMENT,
                    `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                    CONSTRAINT Post_PK PRIMARY KEY (postid) );
 
-CREATE TABLE like(likeid INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE heart(likeid INT NOT NULL AUTO_INCREMENT,
                   postid VARCHAR(20),
                   userid VARCHAR(20),
-                  CONSTRAINT USER_PK PRIMARY KEY (likeid));
+                  CONSTRAINT LIKE_PK PRIMARY KEY (likeid));
 
 CREATE TABLE favorite(favoriteid INT NOT NULL AUTO_INCREMENT,
                   postid VARCHAR(20),
                   userid VARCHAR(20),
                   tag VARCHAR(50),
-                  CONSTRAINT USER_PK PRIMARY KEY (favoriteid));
+                  CONSTRAINT FAVORITE_PK PRIMARY KEY (favoriteid));
 
 
 ALTER TABLE user AUTO_INCREMENT=10000;
 ALTER TABLE post AUTO_INCREMENT=10000;
-ALTER TABLE like AUTO_INCREMENT=10000;
+ALTER TABLE heart AUTO_INCREMENT=10000;
 ALTER TABLE favorite AUTO_INCREMENT=10000;
 
 
-INSERT INTO user (name, email, password) VALUES ('RohinPaikattil', 'rohin.paikattil@gmail.com', "WebDevPrj@123");
-INSERT INTO user (name, email, password) VALUES ('AnmolRamayanam', 'anmol.ram@gmail.com', "Pittsburgh@123");
+INSERT INTO user (name, email, password) VALUES ('xyz', 'xyz', 'xyz');
+INSERT INTO user (name, email, password) VALUES ('abc', 'abc', 'abc');
 INSERT INTO user (name, email, password) VALUES ('test', 'test', 'test');
 
 

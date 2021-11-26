@@ -1,3 +1,5 @@
+https://github.com/shohan-ch/social-network-template
+
 https://smarttechnicalworld.com/install-mysql-on-apple-mac-m1/
 
 https://realpython.com/primer-on-jinja-templating/

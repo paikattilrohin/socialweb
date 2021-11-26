@@ -103,7 +103,6 @@ def get_posts_by_user(user_id):
 
 def get_unlogged_user_posts():
     all_posts = []
-
     command = "SELECT content, postid, name FROM post ORDER BY date DESC"
     db_result_posts = db_con.executeAndRetrieveCommand(command)
     for post in db_result_posts:
@@ -113,3 +112,28 @@ def get_unlogged_user_posts():
             'postid': post[1]
         })
     return all_posts
+
+
+def add_like(user_id, post_id):
+    command = "SELECT * FROM heart WHERE postid =" + str(post_id) + " AND userid =" + str(user_id)
+    likes = db_con.executeAndRetrieveCommand(command)
+    if len(likes) == 0:
+        command = "INSERT INTO heart (userid, postid ) VALUES " \
+                  "('{fuser_id}', '{fpost_id}')".format(fpost_id=post_id, fuser_id=user_id)
+        db_con.executeCommandOnly(command)
+        return True
+    else:
+        db_con.executeCommandOnly("DELETE FROM heart WHERE postid =" + str(post_id) + " AND userid =" + str(user_id) +"")
+
+
+def add_favorite(user_id, post_id, tags):
+    command = "SELECT * FROM favorite WHERE postid =" + str(post_id) + " AND userid =" + str(user_id) + ""
+    favorites = db_con.executeAndRetrieveCommand(command)
+    if len(favorites) == 0:
+        command = "INSERT INTO favorite (userid, postid, tag) VALUES " \
+                  "('{fuser_id}', '{fpost_id}', '{ftags}')".format(fpost_id=post_id, fuser_id=user_id, ftags=tags)
+        db_con.executeCommandOnly(command)
+        return True
+    else:
+        db_con.executeCommandOnly("DELETE FROM favorite WHERE postid =" + str(post_id) + " AND userid =" + str(user_id) + "")
+

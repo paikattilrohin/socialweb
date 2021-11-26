@@ -51,6 +51,21 @@ def index():
         return render_template('index.html', all_posts=posts)
 
 
+@app.route('/search', methods=['GET'])
+def search():
+    search_query = request.args['search'] ## this is the searched string use this to apply the logic
+    if current_user.is_authenticated:
+        posts = []
+        return render_template('index.html', all_posts=posts)
+        # return render_template('logged_search.html', all_posts=posts)  ## create these templates
+    else:
+        posts = Utilities.get_unlogged_user_posts()
+        # return render_template('unlogged_search.html', all_posts=posts)
+        return render_template('index.html', all_posts=posts)  ## create these templates
+
+
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if flask.request.method == 'GET':
@@ -66,6 +81,7 @@ def login():
             return redirect(url_for('home'))
         else:
             return 'wrong'
+
 
 @app.route('/redirect', methods=['POST'])
 def redir():
@@ -130,18 +146,21 @@ def profile():
 @app.route('/like', methods=['POST'])
 @flask_login.login_required
 def like():
-    print(request.values)
+    user_id = Utilities.get_user_id(current_user.id)
+    post_id = request.form['postid']
+    Utilities.add_like(user_id, post_id)
     return "1"
+
 
 @app.route('/favorite', methods=['POST'])
 @flask_login.login_required
 def favorite():
-    print(request.values)
+    user_id = Utilities.get_user_id(current_user.id)
+    post_id = request.form['postid']
+    tags = request.form['tag']
+    Utilities.add_favorite(user_id, post_id, tags)
     return "1"
-    # user_id = Utilities.get_user_id(current_user.id)
-    # name = Utilities.get_name_for_user(user_id)
-    # posts = Utilities.get_posts_by_user(user_id)
-    # return render_template('loggedin.html', all_posts = posts, name = name )
+
 
 
 if __name__ == '__main__':
