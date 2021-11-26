@@ -5,3 +5,7 @@ https://realpython.com/primer-on-jinja-templating/
 https://stackoverflow.com/questions/30011170/flask-application-how-to-link-a-javascript-file-to-website
 
 https://frontbackend.com/css/css-like-and-favorite-buttons
+
+https://stackoverflow.com/questions/12059424/about-mysqldb-conn-autocommittrue
+
+https://stackoverflow.com/questions/37908024/form-sends-get-instead-of-post

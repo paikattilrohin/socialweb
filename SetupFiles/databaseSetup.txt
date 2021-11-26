@@ -1,9 +1,18 @@
 DROP TABLE post;
 DROP TABLE user;
 
-CREATE TABLE user(userid INT NOT NULL AUTO_INCREMENT, name VARCHAR(50) NOT NULL, email VARCHAR(50) NOT NULL,password VARCHAR(25) NOT NULL ,CONSTRAINT USER_PK PRIMARY KEY (USERID));
+CREATE TABLE user(userid INT NOT NULL AUTO_INCREMENT,
+                  name VARCHAR(50) NOT NULL,
+                  email VARCHAR(50) NOT NULL,
+                  password VARCHAR(25) NOT NULL,
+                  CONSTRAINT USER_PK PRIMARY KEY (USERID));
 
-CREATE TABLE post(postid INT NOT NULL AUTO_INCREMENT,title VARCHAR(255), content VARCHAR(255) NOT NULL, userid VARCHAR(255), CONSTRAINT Post_PK PRIMARY KEY (postid) );
+CREATE TABLE post(postid INT NOT NULL AUTO_INCREMENT,
+                   title VARCHAR(255),
+                   content VARCHAR(255) NOT NULL,
+                   userid VARCHAR(255),
+                   `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                   CONSTRAINT Post_PK PRIMARY KEY (postid) );
 
 ALTER TABLE user AUTO_INCREMENT=10000;
 ALTER TABLE post AUTO_INCREMENT=10000;
@@ -13,4 +22,4 @@ INSERT INTO user (name, email, password) VALUES ('RohinPaikattil', 'rohin.paikat
 INSERT INTO user (name, email, password) VALUES ('AnmolRamayanam', 'anmol.ram@gmail.com', "Pittsburgh@123");
 
 
-INSERT INTO post (content) VALUES ('Sample post1');
+

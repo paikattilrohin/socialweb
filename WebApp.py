@@ -39,7 +39,7 @@ def request_loader(req):
 
 @login_manager.unauthorized_handler
 def unauthorized_handler():
-    return 'Unauthorized'
+    return redirect(url_for('login'))
 
 
 @app.route('/view', methods=['GET'])
@@ -49,12 +49,14 @@ def view_post():
 
 @app.route('/', methods=['GET'])
 def index():
-
-    posts = [{'postid': 1000, 'content': 'Hello', 'name': 'Rohin '},
-             {'postid': 1001, 'content': 'Goodbye', 'name': 'DUMBASS'}]
-
-
-    return render_template('index.html', all_posts=posts)
+    if current_user.is_authenticated:
+        posts = Utilities.get_posts_for_user(current_user.id)
+        return render_template('index.html', all_posts=posts)
+    else:
+        posts = [{'postid': 1000, 'content': 'Hello', 'name': ' '},
+                 {'postid': 1001, 'content': 'Goodbye', 'name': 'DUMBASS'}]
+        # posts = Utilities.get_unlogged_user_posts()
+        return render_template('index.html', all_posts=posts)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -82,7 +84,8 @@ def signup():
         name = request.form['name']
         email = request.form['emailID']
         password = request.form['password']
-        success = Utilities.createUser(name, email, password)
+        print(name, email, password)
+        success = Utilities.create_user(name, email, password)
         if success:
             user = User()
             user.id = email
@@ -92,20 +95,17 @@ def signup():
             return redirect(url_for('signup'))
 
 
-@app.route('/content', methods=['GET', 'POST'])
+@app.route('/createpost', methods=['POST'])
+@flask_login.login_required
 def posting():
-    posts = request.form['content']
-    success = Utilities.createpost(posts)
-    print('step2')
+    print("Received post")
+    content = request.form['postcontent']
+    user_id = Utilities.get_user_id(current_user.id)
+    success = Utilities.createpost(content, user_id)
     if success:
-        return 'post created'
+        return redirect('profile')
     else:
         return 'post not created'
-
-
-@login_manager.unauthorized_handler
-def unauthorized_handler():
-    return redirect(url_for('login'))
 
 
 @app.route('/logout', methods=['GET'])
@@ -130,7 +130,8 @@ def post():
 @app.route('/profile', methods=['GET'])
 @flask_login.login_required
 def profile():
-    return render_template('loggedin.html')
+    posts = Utilities.get_posts_by_user(current_user.id)
+    return render_template('loggedin.html', all_posts = posts)
 
 
 if __name__ == '__main__':
