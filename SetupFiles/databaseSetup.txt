@@ -21,7 +21,7 @@ CREATE TABLE heart(likeid INT NOT NULL AUTO_INCREMENT,
                   postid VARCHAR(20),
                   userid VARCHAR(20),
                   CONSTRAINT LIKE_PK PRIMARY KEY (likeid));
-
+	
 CREATE TABLE favorite(favoriteid INT NOT NULL AUTO_INCREMENT,
                   postid VARCHAR(20),
                   userid VARCHAR(20),
@@ -38,5 +38,16 @@ ALTER TABLE favorite AUTO_INCREMENT=10000;
 INSERT INTO user (name, email, password) VALUES ('xyz', 'xyz', 'xyz');
 INSERT INTO user (name, email, password) VALUES ('abc', 'abc', 'abc');
 INSERT INTO user (name, email, password) VALUES ('test', 'test', 'test');
+
+
+select content, (case when content like '%python%' then 1 else 0 end +
+case when content like '%write%' then 1 else 0 end +
+case when content like '%file%' then 1 else 0 end) as "value" from post
+where content like '%python%' OR content like '%write%' OR content like '%file%'
+order by value DESC;
+
+
+
+
 
 
