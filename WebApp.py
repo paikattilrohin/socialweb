@@ -56,8 +56,8 @@ def search():
     search_query = request.args['search'] ## this is the searched string use this to apply the logic
     if current_user.is_authenticated:
         posts = []
-        return render_template('index.html', all_posts=posts)
-        # return render_template('logged_search.html', all_posts=posts)  ## create these templates
+        #return render_template('index.html', all_posts=posts)
+        return render_template('logged_search.html', all_posts=posts)  ## create these templates
     else:
         posts = Utilities.get_unlogged_user_posts()
         # return render_template('unlogged_search.html', all_posts=posts)
@@ -131,7 +131,7 @@ def home():
     user_id = Utilities.get_user_id(current_user.id)
     name = Utilities.get_name_for_user(user_id)
     posts = Utilities.get_posts_for_user(user_id)
-    return render_template('loggedin.html', all_posts = posts )
+    return render_template('loggedin.html', all_posts = posts, dashboard=None )
 
 
 @app.route('/profile', methods=['GET'])
@@ -140,7 +140,8 @@ def profile():
     user_id = Utilities.get_user_id(current_user.id)
     name = Utilities.get_name_for_user(user_id)
     posts = Utilities.get_posts_by_user(user_id)
-    return render_template('loggedin.html', all_posts = posts, name = name )
+    dashboardstats = Utilities.get_dashboard_stats(user_id)
+    return render_template('loggedin.html', all_posts = posts, name = name, dashboard = dashboardstats )
 
 
 @app.route('/like', methods=['POST'])

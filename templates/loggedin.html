@@ -69,8 +69,6 @@
         <div class="col-4 col-lg-3">
 
             <div class="left-column">
-
-
                 <div class="card card-left1 mb-4">
                     <div class="card-body text-center ">
                         <h5 class="card-title">{{name}}</h5>
@@ -78,20 +76,20 @@
                     </div>
                 </div>
             </div>
+            {% if dashboard %}
              <div class="card shadow-sm card-left2 mb-4">
 
                         <div class="card-body">
 
                                 <h5 class="mb-3 card-title">Dashboard<small></small></h5>
 
-                                <p class="card-text"># Posts Liked <a href="#" class="text-decoration-none"></a></p>
-
-                                <p class="card-text"># Posts tagged</p>
-                                <p class="card-text"># Favourite posts</p>
-                                <p class="card-text"># Posts gotten liked </p>
+                                <p class="card-text"># Posts Liked {{dashboard['like']}}</p>
+                                <p class="card-text"># Favourite posts {{dashboard['favorite']}}</p>
+                                <p class="card-text"># Posts posted {{dashboard['post']}}</p>
 
                         </div>
-    </div>
+             </div>
+            {% endif %}
 
         </div>
 

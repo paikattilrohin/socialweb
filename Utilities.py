@@ -100,6 +100,16 @@ def get_posts_by_user(user_id):
             })
     return all_posts
 
+def get_dashboard_stats(user_id):
+    command_likes = "SELECT COUNT(likeid) FROM heart WHERE userid="+str(user_id)
+    command_favorite = "SELECT COUNT(favoriteid) FROM favorite WHERE userid="+ str(user_id)
+    command_posts = "SELECT COUNT(postid) FROM post WHERE userid="+ str(user_id)
+    db_like = db_con.executeAndRetrieveCommand(command_likes)
+    db_favorite = db_con.executeAndRetrieveCommand(command_favorite)
+    db_post = db_con.executeAndRetrieveCommand(command_posts)
+    dashboard = {'like':db_like[0][0], 'favorite': db_favorite[0][0], 'post':db_post[0][0]}
+    print(dashboard)
+    return dashboard
 
 def get_unlogged_user_posts():
     all_posts = []
