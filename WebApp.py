@@ -53,7 +53,7 @@ def index():
 
 @app.route('/search', methods=['GET'])
 def search():
-    search_query = request.args['search'] ## this is the searched string use this to apply the logic
+    search_query = request.args['actualsearch'] ## this is the searched string use this to apply the logic
     if current_user.is_authenticated:
         posts = []
         #return render_template('index.html', all_posts=posts)

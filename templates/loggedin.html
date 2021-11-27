@@ -42,10 +42,14 @@
         </ul>
         <div>
              <ul class="navbar-nav mr-auto text-capitalize">
+                 <input type="text" name="search" id="search" placeholder="Search" class="form-control form-control-sm" target ="">
+
                  <form action="search" method="get" class="form-inline ml-auto d-none d-md-block">
-                    <input type="text" name="search" id="search" placeholder="Search" class="form-control form-control-sm">
-                    <button type="submit"><i class="fa fa-search"></i></button>
+                    <input type="text" name="actualsearch" id="actualsearch"  class="hide">
+                     <button class="hide" type="submit" id="searchsubmit"></button>
                  </form>
+
+                    <button id="dummysearch"><i class="fa fa-search"></i></button>
                     <li class="nav-item"><a href="logout" class="nav-link active">Logout</a></li>
              </ul>
         </div>
@@ -82,7 +86,6 @@
                         <div class="card-body">
 
                                 <h5 class="mb-3 card-title">Dashboard<small></small></h5>
-
                                 <p class="card-text"># Posts Liked {{dashboard['like']}}</p>
                                 <p class="card-text"># Favourite posts {{dashboard['favorite']}}</p>
                                 <p class="card-text"># Posts posted {{dashboard['post']}}</p>
@@ -305,6 +308,44 @@
             });
 
     }));
+
+    let dummysearch = document.getElementById("dummysearch");
+    let searchsubmit = document.getElementById("searchsubmit");
+    let searchInput = document.getElementById("search");
+    let actualInput = document.getElementById("actualsearch");
+    const noiseWords = {'i': null,
+                        'are':null,
+                        'the':null,
+                        'an':null,
+                        'is':null,
+                        'was': null,
+                        'where':null,
+                        'what':null,
+                        'that':null,
+                        'why':null
+                        'whose': null,
+                        'you':null,
+                        'here':null,
+                        'your':null,
+                        'and':null
+                        'but': null,
+                        'between':null,
+                        'does':null,
+                        'not':null,
+                        'do':null
+    };
+    dummysearch.addEventListener('click', ()=>{
+        var fullsearch = searchInput.value;
+        var noiseFiltered = "";
+        var wordsarray = fullsearch.toLowerCase().split(" ");
+        for (let i = 0; i < wordsarray.length;i++) {
+            if(noiseWords[wordsarray[i]]===undefined){
+                noiseFiltered += " "+ wordsarray[i];
+            }
+        }
+        actualInput.value = noiseFiltered;
+        searchsubmit.click();
+    });
 
     // $('.submit').click((event)=>{
     //     var elem = this;
