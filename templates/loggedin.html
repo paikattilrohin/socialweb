@@ -342,6 +342,7 @@
     };
     dummysearch.addEventListener('click', ()=>{
         var fullsearch = searchInput.value;
+        fullsearch = fullsearch.replace(/[^\w\s]|_/g," ");
         var noiseFiltered = "";
         var wordsarray = fullsearch.toLowerCase().split(" ");
         for (let i = 0; i < wordsarray.length;i++) {

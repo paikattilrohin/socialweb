@@ -256,6 +256,7 @@
     dummysearch.addEventListener('click', ()=>{
         var fullsearch = searchInput.value;
         var noiseFiltered = "";
+        fullsearch = fullsearch.replace(/[^\w\s]|_/g," ");
         var wordsarray = fullsearch.toLowerCase().split(" ");
         for (let i = 0; i < wordsarray.length;i++) {
             if(noiseWords[wordsarray[i]]===undefined){
