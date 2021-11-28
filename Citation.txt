@@ -11,3 +11,5 @@ https://frontbackend.com/css/css-like-and-favorite-buttons
 https://stackoverflow.com/questions/12059424/about-mysqldb-conn-autocommittrue
 
 https://stackoverflow.com/questions/37908024/form-sends-get-instead-of-post
+
+https://stackoverflow.com/questions/8987455/sql-server-multiple-word-search-and-ranking-the-results

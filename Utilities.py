@@ -124,6 +124,43 @@ def get_unlogged_user_posts():
     return all_posts
 
 
+
+
+# select content, (case when content like '%python%' then 1 else 0 end +
+# case when content like '%write%' then 1 else 0 end +
+# case when content like '%file%' then 1 else 0 end) as "value" from post
+# where content like '%python%' OR content like '%write%' OR content like '%file%'
+# order by value DESC;
+#
+def get_unlogged_search_posts(search_query):
+    all_posts = []
+    search_words = search_query.split()
+
+    case_command =""
+    where_command =""
+    for k in range(len(search_words)):
+        search_words[k] = "content like \'%" + search_words[k] + "%\'"
+        if k is not len(search_words)-1:
+            case_command += "case when " + search_words[k] + " then 1 else 0 end + "
+            where_command += search_words[k] + " OR "
+        else:
+            case_command += "case when " + search_words[k] +" then 1 else 0 end"
+            where_command += search_words[k]
+
+        k+=1
+    command = "SELECT content, postid, name, (" + case_command + ") as \"value\"  FROM post WHERE " + where_command + " ORDER BY VALUE DESC"
+    print(command)
+    db_result_posts = db_con.executeAndRetrieveCommand(command)
+    for post in db_result_posts:
+        all_posts.append({
+            'name': post[2],
+            'content': post[0],
+            'postid': post[1],
+            'rank': post[3]
+         })
+    return all_posts
+
+
 def add_like(user_id, post_id):
     command = "SELECT * FROM heart WHERE postid =" + str(post_id) + " AND userid =" + str(user_id)
     likes = db_con.executeAndRetrieveCommand(command)
