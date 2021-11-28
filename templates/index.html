@@ -22,7 +22,7 @@
 
 <!-------------------------------NAvigation Starts------------------>
 
-<nav class="navbar navbar-expand-md navbar-dark mb-4" style="background-color:#808000">
+<nav class="navbar navbar-expand-md navbar-dark mb-4" style="background-color:#4B0082">
     <a href="/" class="navbar-brand"><img src="/static/Images/brand-white.png" alt="logo" class="img-fluid" width="80px"
                                           height="70px"></a>
 
@@ -32,17 +32,21 @@
 
     <div class="collapse navbar-collapse" id="responsive">
         <ul class="navbar-nav mr-auto text-capitalize">
-            <li class="nav-item"><a href="/" class="nav-link active">home</a></li>
+            <li class="nav-item"><a href="/" class="nav-link">home</a></li>
             <li class="nav-item"><a href="#" class="nav-link d-md-none">growl</a></li>
 
         </ul>
         <div>
              <ul class="navbar-nav mr-auto text-capitalize">
+                 <input type="text" name="search" id="search" placeholder="Search" class="form-control form-control-sm" target ="">
+
                  <form action="search" method="get" class="form-inline ml-auto d-none d-md-block">
-                    <input type="text" name="search" id="search" placeholder="Search" class="form-control form-control-sm">
-                    <button type="submit"><i class="fa fa-search"></i></button>
+                    <input type="text" name="actualsearch" id="actualsearch"  class="hide">
+                     <button class="hide" type="submit" id="searchsubmit"></button>
                  </form>
-                    <li class="nav-item"><a href="login" class="nav-link active">Signup/Login</a></li>
+
+                    <button id="dummysearch"><i class="fa fa-search"></i></button>
+                 <li class="nav-item"><a href="login" class="nav-link active">Signup/Login</a></li>
 
              </ul>
         </div>
@@ -217,6 +221,44 @@
         console.log("hi");
         e.currentTarget.classList.toggle('liked');    
     }));
+     let dummysearch = document.getElementById("dummysearch");
+    let searchsubmit = document.getElementById("searchsubmit");
+    let searchInput = document.getElementById("search");
+    let actualInput = document.getElementById("actualsearch");
+    const noiseWords = {'i': null,
+                        'are':null,
+                        'the':null,
+                        'an':null,
+                        'is':null,
+                        'was': null,
+                        'where':null,
+                        'what':null,
+                        'that':null,
+                        'why':null,
+                        'whose': null,
+                        'you':null,
+                        'here':null,
+                        'your':null,
+                        'and':null,
+                        'but': null,
+                        'between':null,
+                        'does':null,
+                        'not':null,
+                        'do':null
+    };
+
+    dummysearch.addEventListener('click', ()=>{
+        var fullsearch = searchInput.value;
+        var noiseFiltered = "";
+        var wordsarray = fullsearch.toLowerCase().split(" ");
+        for (let i = 0; i < wordsarray.length;i++) {
+            if(noiseWords[wordsarray[i]]===undefined){
+                noiseFiltered += " "+ wordsarray[i];
+            }
+        }
+        actualInput.value = noiseFiltered;
+        searchsubmit.click();
+    });
 
 
 

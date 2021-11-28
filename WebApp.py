@@ -60,8 +60,8 @@ def search():
         return render_template('logged_search.html', all_posts=posts)  ## create these templates
     else:
         posts = Utilities.get_unlogged_user_posts()
-        # return render_template('unlogged_search.html', all_posts=posts)
-        return render_template('index.html', all_posts=posts)  ## create these templates
+        return render_template('index_search.html', all_posts=posts)
+        #return render_template('index.html', all_posts=posts)  ## create these templates
 
 
 

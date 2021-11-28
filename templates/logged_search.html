@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+
+    <!--STATIC files -->
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <!--        <link rel="stylesheet" href="/static/style.css'">-->
+
+    <!------------------LIght BOx for Gallery-------------->
+    <link rel="stylesheet" href="{{url_for('static', filename='lightbox.min.css')}}">
+    <script type="text/javascript" src="{{url_for('static', filename='lightbox-plus-jquery.min.js')}}"></script>
+    <!------------------LIght BOx for Gallery-------------->
+    <title>Application-1</title>
+</head>
+<body>
+
+
+<!-------------------------------NAvigation Starts------------------>
+
+<nav class="navbar navbar-expand-md navbar-dark mb-4" style="background-color:#4B0082">
+    <a href="/" class="navbar-brand"><img src="/static/Images/brand-white.png" alt="logo" class="img-fluid" width="80px"
+                                          height="70px"></a>
+
+    <button class="navbar-toggler" data-toggle="collapse" data-target="#responsive"><span
+            class="navbar-toggler-icon"></span></button>
+
+
+    <div class="collapse navbar-collapse" id="responsive">
+        <ul class="navbar-nav mr-auto text-capitalize">
+            <li class="nav-item"><a href="/" class="nav-link">home</a></li>
+            <li class="nav-item"><a href="profile" class="nav-link">My Profile</a></li>
+            <li class="nav-item"><a href="#" class="nav-link d-md-none">growl</a></li>
+
+        </ul>
+        <div>
+             <ul class="navbar-nav mr-auto text-capitalize">
+                 <form action="" class="form-inline ml-auto d-none d-md-block">
+                    <input type="text" name="search" id="search" placeholder="Search" class="form-control form-control-sm">
+          <!--          <button type="submit"><i class="fa fa-search"></i></button> -->
+                 </form>
+                    <li class="nav-item"><a href="login" class="nav-link active">Logout</a></li>
+             </ul>
+        </div>
+    </div>
+
+
+</nav>
+
+<!---------------------------------------------Ends navigation------------------------------>
+
+
+<!-------------------------------------------Start Grids layout for lg-xl-3 columns and (xs-lg 1 columns)--------------------------------->
+
+
+<div class="container">
+    <div class="row">
+
+        <!--------------------------left columns  start-->
+
+        <div class="col-12 col-lg-3">
+
+            <div class="left-column">
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+</div>
+
+
+<!--------------------------Ends Left columns-->
+
+
+<!---------------------------------------Middle columns  start---------------->
+
+<div class="col-12 col-lg-14">
+
+
+    <div class="middle-column">
+
+
+        <div class="card">
+
+
+
+
+            <div class="col-12 col-lg-14">
+                <div class="card shadow-sm">
+                    <hr>
+
+                    <div class="card-body">
+
+                        <div class="media">
+                            <img src="/static/Images/unknown_user_avatar.jpg" alt="img" width="55px" height="55px"
+                                 class="rounded-circle mr-3">
+
+                            <div class="media-body">
+{#                                <h5>{{ n["name"]}}</h5>#}
+{#                                <p class="text-justify">{{n['content']}}</p>#}
+{#                                <hr>#}
+{##}
+{#                                <button class="like-button" id="{{n['postid']}}"> ♥</button>#}
+{#                                <input class="hide" type="text" id="{{n['postid']}}tag" placeholder="tags"/>#}
+{#                                <button class="favorite-button" id="{{n['postid']}}"> ✭</button>#}
+{#                                <button class="submit hide" id="{{n['postid']}}submit"> ✭</button>#}
+                            </div>
+                            <small>14 min</small>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <hr>
+
+        </div>
+
+    </div>
+
+</div>
+
+<br> <br> <br><br> <br> <br>
+
+<!------------------------Middle column Ends---------------->
+
+
+<!---------------------------Statrs Right Columns----------------->
+
+
+<div class="col-12 col-lg-14">
+
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <p>&copy; MagicOverFlow
+
+                <a href="#">Help</a>
+                <a href="#">Terms</a>
+                <a href="#">Privacy</a>
+                <a href="#">Cookies</a>
+
+            </p>
+        </div>
+
+    </div>
+
+</div>
+</div>
+
+</div>
+<!------------------------Light BOx OPtions------------->
+<script>
+        lightbox.option({
+
+        });
+
+
+
+
+</script>
+
+
+<!------------------------Light BOx OPtions------------->
+
+<script>
+
+    let likebuttons = document.querySelectorAll('.like-button');
+    likebuttons.forEach(el => el.addEventListener('click' , (e)=>{
+        e.currentTarget.classList.toggle('liked');
+        console.log(e.target.id);
+    }));
+
+    let favoritebuttons = document.querySelectorAll('.favorite-button');
+    favoritebuttons.forEach(el => el.addEventListener('click' , (e)=>{
+        var taggingbox = document.getElementById(e.target.id + "tag");
+        taggingbox.classList.toggle('hide');
+        var submitbutton = document.getElementById(e.target.id + "submit");
+        submitbutton.classList.toggle('hide');
+        e.target.classList.toggle('hide');
+    }));
+
+    let submitbuttons = document.querySelectorAll('.submit');
+    submitbuttons.forEach(el => el.addEventListener('click' , (e)=>{
+        console.log("hi");
+        e.currentTarget.classList.toggle('liked');    
+    }));
+
+
+
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
