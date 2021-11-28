@@ -39,11 +39,16 @@
         </ul>
         <div>
              <ul class="navbar-nav mr-auto text-capitalize">
-                 <form action="" class="form-inline ml-auto d-none d-md-block">
-                    <input type="text" name="search" id="search" placeholder="Search" class="form-control form-control-sm">
-          <!--          <button type="submit"><i class="fa fa-search"></i></button> -->
+                 <input type="text" name="search" id="search" placeholder="Search" class="form-control form-control-sm" target ="">
+
+                 <form action="search" method="get" class="form-inline ml-auto d-none d-md-block">
+                    <input type="text" name="actualsearch" id="actualsearch"  class="hide">
+                     <button class="hide" type="submit" id="searchsubmit"></button>
                  </form>
-                    <li class="nav-item"><a href="login" class="nav-link active">Logout</a></li>
+
+                    <button id="dummysearch"><i class="fa fa-search"></i></button>
+                  <li class="nav-item"><a href="login" class="nav-link active">Logout</a></li>
+
              </ul>
         </div>
     </div>
@@ -94,6 +99,9 @@
 
             <div class="col-12 col-lg-14">
                 <div class="card shadow-sm">
+                    {% for n in all_posts %}
+            <div class="col-12 col-lg-14">
+                <div class="card shadow-sm">
                     <hr>
 
                     <div class="card-body">
@@ -103,16 +111,16 @@
                                  class="rounded-circle mr-3">
 
                             <div class="media-body">
-{#                                <h5>{{ n["name"]}}</h5>#}
-{#                                <p class="text-justify">{{n['content']}}</p>#}
-{#                                <hr>#}
-{##}
-{#                                <button class="like-button" id="{{n['postid']}}"> ♥</button>#}
-{#                                <input class="hide" type="text" id="{{n['postid']}}tag" placeholder="tags"/>#}
-{#                                <button class="favorite-button" id="{{n['postid']}}"> ✭</button>#}
-{#                                <button class="submit hide" id="{{n['postid']}}submit"> ✭</button>#}
+                                <h5>{{ n["name"]}}</h5>
+                                <p class="text-justify">{{n['content']}}</p>
+                                <hr>
+
+                                <button class="like-button" id="{{n['postid']}}"> ♥</button>
+                                <input class="hide" type="text" id="{{n['postid']}}tag" placeholder="tags"/>
+                                <button class="favorite-button" id="{{n['postid']}}"> ✭</button>
+                                <button class="submit hide" id="{{n['postid']}}submit"> ✭</button>
                             </div>
-                            <small>14 min</small>
+                            <small></small>
 
                         </div>
                     </div>
@@ -120,6 +128,8 @@
 
             </div>
             <hr>
+
+            {% endfor %}
 
         </div>
 
@@ -192,6 +202,52 @@
         console.log("hi");
         e.currentTarget.classList.toggle('liked');    
     }));
+
+    let dummysearch = document.getElementById("dummysearch");
+    let searchsubmit = document.getElementById("searchsubmit");
+    let searchInput = document.getElementById("search");
+    let actualInput = document.getElementById("actualsearch");
+    const noiseWords = {'i': null,
+                        'are':null,
+                        'the':null,
+                        'an':null,
+                        'is':null,
+                        'was': null,
+                        'where':null,
+                        'what':null,
+                        'that':null,
+                        'why':null,
+                        'whose': null,
+                        'you':null,
+                        'here':null,
+                        'your':null,
+                        'and':null,
+                        'but': null,
+                        'between':null,
+                        'does':null,
+                        'not':null,
+                        'do':null,
+                        'want':null,
+                        'to':null,
+                        'a': null,
+                        'how':null,
+                        'from':null,
+                        'into':null
+    };
+
+    dummysearch.addEventListener('click', ()=>{
+        var fullsearch = searchInput.value;
+        var noiseFiltered = "";
+        fullsearch = fullsearch.replace(/[^\w\s]|_/g," ");
+        var wordsarray = fullsearch.toLowerCase().split(" ");
+        for (let i = 0; i < wordsarray.length;i++) {
+            if(noiseWords[wordsarray[i]]===undefined){
+                noiseFiltered += " "+ wordsarray[i];
+            }
+        }
+        actualInput.value = noiseFiltered;
+        searchsubmit.click();
+    });
 
 
 
