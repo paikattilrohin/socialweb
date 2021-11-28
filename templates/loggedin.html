@@ -36,8 +36,8 @@
         <ul class="navbar-nav mr-auto text-capitalize">
             <li class="nav-item"><a href="home" class="nav-link">home</a></li>
             <li class="nav-item"><a href="profile" class="nav-link">My Profile</a></li>
-            <li class="nav-item"><a href="#" class="nav-link d-md-none">growl</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">logout</a></li>
+
+
 
         </ul>
         <div>
@@ -64,13 +64,11 @@
 <!-------------------------------------------Start Grids layout for lg-xl-3 columns and (xs-lg 1 columns)--------------------------------->
 
 
-<div class="container">
+<div >
     <div class="row">
-
-
         <!--------------------------left columns  start-->
 
-        <div class="col-4 col-lg-3">
+        <div class="col-1 col-lg-2">
 
             <div class="left-column">
                 <div class="card card-left1 mb-4">
@@ -85,7 +83,7 @@
 
                         <div class="card-body">
 
-                                <h5 class="mb-3 card-title">Dashboard<small></small></h5>
+                            <h5 class="mb-3 card-title"><b>Dashboard</b><small></small></h5>
                                 <p class="card-text"># Posts Liked {{dashboard['like']}}</p>
                                 <p class="card-text"># Favourite posts {{dashboard['favorite']}}</p>
                                 <p class="card-text"># Posts posted {{dashboard['post']}}</p>
@@ -130,7 +128,7 @@
                         <div class="media">
 
                             <div class="media-body">
-                                <h5>{{name}}</h5>
+                                <h5><b>{{name}}</b></h5>
                                 <p class="card-text text-justify"></p>
 
 
@@ -153,28 +151,6 @@
                     </div>
 
 <!--Before-->
-<!--                    <hr>-->
-<!--                    {% for i in all_posts %}-->
-<!--                    <div class="card-body">-->
-
-<!--                        <div class="media">-->
-
-<!--                            <div class="media-body">-->
-<!--                                <h5>{{name}}</h5>-->
-<!--                                <p class="text-justify">{{i['content']}}</p>-->
-
-
-<!--                            </div>-->
-
-<!--                            <small></small>-->
-
-<!--                        </div>-->
-
-
-<!--                    </div>-->
-<!--                    <hr>-->
-<!--                    {% endfor %}-->
-<!--Before-->
     {% for n in all_posts %}
             <div class="col-12 col-lg-14">
                 <div class="card shadow-sm">
@@ -187,7 +163,7 @@
                                  class="rounded-circle mr-3">
 
                             <div class="media-body">
-                                <h5>{{ n["name"]}}</h5>
+                                <h5><b>{{ n["name"]}}</b></h5>
                                 <p class="text-justify">{{n['content']}}</p>
                                 <hr>
                                 <button class="like-button" id="{{n['postid']}}"> ♥</button>
@@ -211,6 +187,8 @@
             </div>
 
 
+
+
         </div>
 
 
@@ -222,19 +200,40 @@
         <!---------------------------Statrs Right Columns----------------->
 
 
-        <div class="col-12 col-lg-3">
+     <div class="col-12 col-lg-4">
 
 
             <div class="right-column">
 
                 <div class="card shadow-sm mb-4">
                     <div class="card-body">
-                        <h6 class="card-title">Suggested</h6>
-                        <p class="card-text text-justify"><span class="h6">It might be time to visit Iceland.</span>
-                            Iceland is so chill, and everything looks cool here. Also, we heard the people are pretty
-                            nice. What are you waiting for?</p>
-                        <a href="#" class="btn btn-outline-info card-link btn-sm">Buy a ticket</a>
+                        <h5><b><u>Suggested</u></b></h5>
+                    <hr>
+                        {% for n in suggested_posts %}
+            <div class="col-12 col-lg-14">
+                <div class="card shadow-sm">
+                    <hr>
 
+                    <div class="card-body">
+
+                        <div class="media">
+                            <img src="/static/Images/unknown_user_avatar.jpg" alt="img" width="55px" height="55px"
+                                 class="rounded-circle mr-3">
+
+                            <div class="media-body">
+                                <h5><b>{{ n["name"]}}</b></h5>
+                                <p class="text-justify">{{n['content']}}</p>
+                                <hr>
+                            </div>
+                            <small>14 min</small>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <hr>
+{% endfor %}
+                    </hr>
 
                     </div>
 

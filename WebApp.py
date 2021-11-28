@@ -128,7 +128,9 @@ def home():
     user_id = Utilities.get_user_id(current_user.id)
     name = Utilities.get_name_for_user(user_id)
     posts = Utilities.get_posts_for_user(user_id)
-    return render_template('loggedin.html', all_posts = posts, dashboard=None )
+    dashboardstats = Utilities.get_dashboard_stats(user_id)
+    suggested_posts = Utilities.get_suggested_posts(user_id)
+    return render_template('loggedin.html', all_posts=posts, name=name, dashboard=dashboardstats, suggested_posts = suggested_posts )
 
 
 @app.route('/profile', methods=['GET'])
@@ -138,7 +140,8 @@ def profile():
     name = Utilities.get_name_for_user(user_id)
     posts = Utilities.get_posts_by_user(user_id)
     dashboardstats = Utilities.get_dashboard_stats(user_id)
-    return render_template('loggedin.html', all_posts = posts, name = name, dashboard = dashboardstats )
+    suggested_posts = Utilities.get_suggested_posts(user_id)
+    return render_template('loggedin.html', all_posts = posts, name = name, dashboard = dashboardstats, suggested_posts = suggested_posts )
 
 
 @app.route('/like', methods=['POST'])

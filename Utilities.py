@@ -77,6 +77,25 @@ def get_posts_for_user(user_id):
     return all_posts
 
 
+def get_suggested_posts(user_id):
+    name = get_name_for_user(user_id)
+    suggested_posts = []
+    if name is not None:
+        userid = user_id
+        command1 = " SELECT userid from post WHERE postid IN (SELECT postid from heart where userid =" + str(userid)
+        command2 = " SELECT postid from post WHERE postid IN (SELECT postid from heart where userid =" + str(userid)
+        command = "SELECT content, postid, name FROM post WHERE postid IN (SELECT postid FROM heart WHERE userid IN (" +command1 + "))) AND postid NOT IN (" + command2 + "))"
+        db_result_posts = db_con.executeAndRetrieveCommand(command)
+        print(command)
+        for post in db_result_posts:
+            suggested_posts.append({
+                'name': post[2],
+                'content': post[0],
+                'postid': post[1]
+            })
+    return suggested_posts
+
+
 def get_name_for_user(user_id):
     command = "SELECT name FROM user WHERE userid = '" + str(user_id) + " ' "
     result = db_con.executeAndRetrieveCommand(command)
@@ -108,7 +127,6 @@ def get_dashboard_stats(user_id):
     db_favorite = db_con.executeAndRetrieveCommand(command_favorite)
     db_post = db_con.executeAndRetrieveCommand(command_posts)
     dashboard = {'like':db_like[0][0], 'favorite': db_favorite[0][0], 'post':db_post[0][0]}
-    print(dashboard)
     return dashboard
 
 def get_unlogged_user_posts():
