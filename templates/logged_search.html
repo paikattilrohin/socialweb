@@ -185,7 +185,13 @@
     let likebuttons = document.querySelectorAll('.like-button');
     likebuttons.forEach(el => el.addEventListener('click' , (e)=>{
         e.currentTarget.classList.toggle('liked');
-        console.log(e.target.id);
+        $.ajax({
+               url:'like',
+               type:'POST',
+               data: {
+                    postid: e.target.id
+               }
+            });
     }));
 
     let favoritebuttons = document.querySelectorAll('.favorite-button');
@@ -199,8 +205,18 @@
 
     let submitbuttons = document.querySelectorAll('.submit');
     submitbuttons.forEach(el => el.addEventListener('click' , (e)=>{
-        console.log("hi");
-        e.currentTarget.classList.toggle('liked');    
+        e.currentTarget.classList.toggle('liked');
+        let str = e.target.id.slice(0, -6)
+        var taggingbox = document.getElementById(str + "tag");
+        $.ajax({
+               url:'favorite',
+               type:'POST',
+               data: {
+                    postid: str,
+                    tag: taggingbox.value
+               }
+            });
+
     }));
 
     let dummysearch = document.getElementById("dummysearch");

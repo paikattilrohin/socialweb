@@ -55,7 +55,8 @@ def index():
 def search():
     search_query = request.args['actualsearch'] ## this is the searched string use this to apply the logic
     if current_user.is_authenticated:
-        posts = Utilities.get_unlogged_search_posts(search_query)
+        user_id = Utilities.get_user_id(current_user.id)
+        posts = Utilities.get_logged_search_posts(search_query, user_id)
         #return render_template('index.html', all_posts=posts)
         return render_template('logged_search.html', all_posts=posts)  ## create these templates
     else:

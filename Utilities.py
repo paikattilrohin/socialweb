@@ -1,6 +1,9 @@
 import mysql.connector
 from datetime import datetime
 import constants
+from noisewords import noise_words
+import json
+import os
 
 
 class DB_CONNECTION:
@@ -86,7 +89,6 @@ def get_suggested_posts(user_id):
         command2 = " SELECT postid from post WHERE postid IN (SELECT postid from heart where userid =" + str(userid)
         command = "SELECT content, postid, name FROM post WHERE postid IN (SELECT postid FROM heart WHERE userid IN (" +command1 + "))) AND postid NOT IN (" + command2 + "))"
         db_result_posts = db_con.executeAndRetrieveCommand(command)
-        print(command)
         for post in db_result_posts:
             suggested_posts.append({
                 'name': post[2],
@@ -153,7 +155,6 @@ def get_unlogged_user_posts():
 def get_unlogged_search_posts(search_query):
     all_posts = []
     search_words = search_query.split()
-
     case_command =""
     where_command =""
     for k in range(len(search_words)):
@@ -167,7 +168,7 @@ def get_unlogged_search_posts(search_query):
 
         k+=1
     command = "SELECT content, postid, name, (" + case_command + ") as \"value\"  FROM post WHERE " + where_command + " ORDER BY VALUE DESC"
-    print(command)
+    # print(command)
     db_result_posts = db_con.executeAndRetrieveCommand(command)
     for post in db_result_posts:
         all_posts.append({
@@ -178,6 +179,52 @@ def get_unlogged_search_posts(search_query):
          })
     return all_posts
 
+def swap(post1, post2):
+    #swapping names
+    tname = post1['name']
+    post1['name'] = post2['name']
+    post2['name'] = tname
+
+    #swapping content
+    tcontent = post1['content']
+    post1['content'] = post2['content']
+    post2['content']= tcontent
+
+    # swapping scores
+    tscore = post1['score']
+    post1['score'] = post2['score']
+    post2['score'] = tscore
+
+    #swapping postids
+    tpostid = post1['postid']
+    post1['postid'] = post2['postid']
+    post2['postid'] = tpostid
+    return post1, post2
+
+def get_logged_search_posts(search_query, user_id):
+    all_posts = get_unlogged_search_posts(search_query)
+    user_vector_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'UserInfo')
+    file_path = os.path.join(user_vector_dir, str(user_id) + ".json")
+    if os.path.exists(file_path):
+        f = open(file_path, 'r')
+        data = json.load(f)
+        for post in all_posts:
+            score = 0
+            words = str(post['content'])
+            words = words.lower()
+            words = words.split(" ")
+            for k in words:
+                if k in data:
+                    score += data[k]
+                    post['score'] = score
+                else:
+                    post['score'] = 0
+        for i in range(len(all_posts)):
+            for j in range(i + 1, len(all_posts)):
+                if (all_posts[i]['rank'] == all_posts[j]['rank']):
+                    if(all_posts[i]['score'] < all_posts[j]['score']):
+                        swap(all_posts[i], all_posts[j])
+    return all_posts
 
 def add_like(user_id, post_id):
     command = "SELECT * FROM heart WHERE postid =" + str(post_id) + " AND userid =" + str(user_id)
