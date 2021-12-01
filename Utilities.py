@@ -213,12 +213,12 @@ def get_logged_search_posts(search_query, user_id):
             words = str(post['content'])
             words = words.lower()
             words = words.split(" ")
+            post['score'] = 0
             for k in words:
                 if k in data:
                     score += data[k]
                     post['score'] = score
-                else:
-                    post['score'] = 0
+
         for i in range(len(all_posts)):
             for j in range(i + 1, len(all_posts)):
                 if (all_posts[i]['rank'] == all_posts[j]['rank']):
