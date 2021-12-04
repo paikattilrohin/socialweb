@@ -32,8 +32,6 @@ def request_loader(req):
         login_status = Utilities.check_username_pass(username, password)
         if login_status:
             user = User()
-            # user.id = username
-            # user.is_authenticated = login_status
             return user
 
 
@@ -162,7 +160,6 @@ def favorite():
     tags = request.form['tag']
     Utilities.add_favorite(user_id, post_id, tags)
     return "1"
-
 
 
 if __name__ == '__main__':

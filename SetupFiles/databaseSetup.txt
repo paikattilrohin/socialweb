@@ -34,18 +34,34 @@ ALTER TABLE heart AUTO_INCREMENT=10000;
 ALTER TABLE favorite AUTO_INCREMENT=10000;
 
 
-INSERT INTO user (name, email, password) VALUES ('Rohin Paikattil', 'paikattil.rohin@gmail.com', 'paikattil');
 INSERT INTO user (name, email, password) VALUES ('John Snow', 'john.snow@gmail.com', 'stark');
 INSERT INTO user (name, email, password) VALUES ('Arya Stark', 'arya.stark@gmail.com', 'stark');
 INSERT INTO user (name, email, password) VALUES ('Tyrion Lannister', 'tyrion.lannister@gmail.com', 'lannister');
 INSERT INTO user (name, email, password) VALUES ('Renly Baratheon', 'renly.baratheon@gmail.com', 'baratheon');
 INSERT INTO user (name, email, password) VALUES ('Theon Greyjoy', 'theon.greyjoy@gmail.com', 'greyjoy');
+INSERT INTO user (name, email, password) VALUES ('Rohin Paikattil', 'rohinpaikattil@gmail.com', '12345678');
 
 
-INSERT INTO post(name, content, userid) VALUES ('Rohin Paikattil' , 'The Mind Reading Card Trick','10000');
-INSERT INTO post(name, content, userid) VALUES ('Rohin Paikattil' , 'The Impossible Three Card Trick','10000');
-INSERT INTO post(name, content, userid) VALUES ('Arya Stark' , 'Packet Trick with Selection','10002');
-INSERT INTO post(name, content, userid) VALUES ('Arya Stark' , 'Packet Trick with Selection','10002');
+INSERT INTO post(name, content, userid) VALUES ('John Snow' , 'The Mind Reading Card Trick: Force spectator to think of 7 of hearts using classic force ','10000');
+INSERT INTO post(name, content, userid) VALUES ('John Snow' , 'The Impossible Three Card Trick uses invisible threads','10000');
+INSERT INTO post(name, content, userid) VALUES ('Arya Stark' , 'Packet Trick with Selection ','10001');
+
+INSERT INTO post(name, content, userid) VALUES ('Theon Greyjoy' , 'Mind force using classic force','10001');
+
+INSERT INTO post(name, content, userid) VALUES ('Arya Stark' , 'Paper napkin Restore Trick with Selection ','10001');
+INSERT INTO post(name, content, userid) VALUES ('Arya Stark' , 'Rubix cube broken and Restore Trick with Selection ','10001');
+INSERT INTO post(name, content, userid) VALUES ('Arya Stark' , 'Selection Trick with fake coin','10001');
+
+
+INSERT INTO post(name, content, userid) VALUES ('Tyrion Lannister' , 'Jumping aces Trick David Copperfield uses sticky glue','10002');
+INSERT INTO post(name, content, userid) VALUES ('Tyrion Lannister' , 'Card Restore Trick with Selection requires multiple duplicate cards','10002');
+
+INSERT INTO post(name, content, userid) VALUES ('Rohin Paikattil' , 'First post','10005');
+
+
+
+
+
 
 
 

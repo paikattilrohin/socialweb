@@ -81,13 +81,16 @@ def get_posts_for_user(user_id):
 
 
 def get_suggested_posts(user_id):
+
     name = get_name_for_user(user_id)
     suggested_posts = []
     if name is not None:
         userid = user_id
-        command1 = " SELECT userid from post WHERE postid IN (SELECT postid from heart where userid =" + str(userid)
+        command1 = " SELECT userid from heart WHERE postid IN (SELECT postid from heart where userid =" + str(userid)
         command2 = " SELECT postid from post WHERE postid IN (SELECT postid from heart where userid =" + str(userid)
-        command = "SELECT content, postid, name FROM post WHERE postid IN (SELECT postid FROM heart WHERE userid IN (" +command1 + "))) AND postid NOT IN (" + command2 + "))"
+        command = "SELECT content, postid, name FROM post WHERE postid IN (SELECT postid FROM heart WHERE userid IN (" +command1 + ")) ) " \
+                  + "AND postid NOT IN (" + command2 + "))"
+
         db_result_posts = db_con.executeAndRetrieveCommand(command)
         for post in db_result_posts:
             suggested_posts.append({
@@ -95,6 +98,7 @@ def get_suggested_posts(user_id):
                 'content': post[0],
                 'postid': post[1]
             })
+
     return suggested_posts
 
 
@@ -177,6 +181,18 @@ def get_unlogged_search_posts(search_query):
             'postid': post[1],
             'rank': post[3]
          })
+
+    for word in search_query.split():
+        command = "SELECT content, postid, name FROM post JOIN favorite USING(postid) WHERE tag is NOT NULL AND tag LIKE '%" + word + "'"
+        print(command)
+        db_result_posts = db_con.executeAndRetrieveCommand(command)
+        for post in db_result_posts:
+            all_posts.append({
+                'name': post[2],
+                'content': post[0],
+                'postid': post[1],
+                'rank': 0
+             })
     return all_posts
 
 def swap(post1, post2):
